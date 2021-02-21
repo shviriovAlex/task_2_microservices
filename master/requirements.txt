@@ -1,0 +1,9 @@
+Flask
+flask-restful
+mysql-connector
+Beautifulsoup4
+requests
+mysql-connector-python
+Flask-MySQLdb
+PyYAML
+pytest

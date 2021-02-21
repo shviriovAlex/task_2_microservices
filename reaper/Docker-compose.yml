@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  apiapp:
+    build: .
+    command: flask run --host=127.0.0.2
+    environment:
+      - FLASK_APP=reaper_api.py
+      - FLASK_DEBUG=1
+      - PYTHONUNBUFFERED=True
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./reaper:/usr/src/app

@@ -1,0 +1,47 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:8.0.23
+    container_name: my_db
+    ports:
+      - 8004:8004
+    volumes:
+    - ./Data:/var/lib/mysql
+    environment:
+      MYSQL_HOST: localhost
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: task_docker
+    restart: always
+  master:
+    build: master/
+    image: master_api
+    container_name: master_api
+    ports:
+      - 8000:8000
+    command: python /task_2_microservices/master/master_api.py
+    volumes:
+      - ./:/master
+    restart: always
+  reaper:
+    build: reaper/
+    image: reaper_api
+    container_name: reaper
+    ports:
+      - 8001:8001
+    command: python /task_2_microservices/reaper/reaper_api.py
+    volumes:
+      - ./:/reaper
+    restart: always
+  keeper:
+    build: keeper/
+    image: keeper_api
+    container_name: keeper
+    ports:
+      - 8002:8002
+    command: python /task_2_microservices/keeper/keeper_api.py
+    volumes:
+      - ./:/keeper
+    restart: always
+    depends_on:
+      - db

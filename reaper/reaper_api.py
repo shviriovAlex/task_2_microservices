@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from flask_restful import reqparse, abort, Api, Resource, request
+from flask_restful import Api, Resource, request
 import re
 from bs4 import BeautifulSoup
 import requests
@@ -35,10 +35,10 @@ class ReaperStart(Resource):
     def post(self):
         send_data = request.json
         parser_data = ParserReaper(send_data).page_with_vacancy()
-        requests.post('http://127.0.0.3:5000', json=parser_data)
+        requests.post('http://localhost:8002', json=parser_data)
         return jsonify(send_data)
 
 
 api.add_resource(ReaperStart, '/')
 if __name__ == '__main__':
-    app.run(host='127.0.0.2', port=5000, debug=True)
+    app.run(host='localhost', port=8001, debug=True)

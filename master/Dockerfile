@@ -1,7 +1,11 @@
 FROM python:3.8-buster
-WORKDIR /master
-ENV FLASK_APP=Master.py
+WORKDIR /task_2_microservices/master/
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY . /reaper
-CMD ["python","reaper_api.py"]
+#FROM nginx:alpine
+#COPY . /usr/share/nginx/html
+COPY ./ ./
+CMD ["python", "./master_api.py"]
+
+
+

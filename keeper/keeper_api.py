@@ -1,5 +1,5 @@
-from flask import Flask, render_template, url_for, redirect, request, jsonify, make_response
-from flask_restful import reqparse, abort, Api, Resource, request
+from flask import Flask, jsonify
+from flask_restful import Api, Resource, request
 from flask_mysqldb import MySQL
 import yaml
 
@@ -54,4 +54,4 @@ class KeeperItems(Resource):
 api.add_resource(Keeper, '/')
 api.add_resource(KeeperItems, '/<search_word>')
 if __name__ == '__main__':
-    app.run(host='127.0.0.3', port=5000, debug=True)
+    app.run(host='localhost', port=8002, debug=True)

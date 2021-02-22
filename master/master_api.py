@@ -1,5 +1,5 @@
-from flask import Flask, render_template, url_for, redirect, request, jsonify, make_response
-from flask_restful import reqparse, abort, Api, Resource, request
+from flask import Flask, render_template, redirect
+from flask_restful import Api, Resource, request
 import requests
 
 app = Flask(__name__, template_folder='templates')
@@ -13,7 +13,7 @@ class Master(Resource):
         self.link = link
 
     def post(self):
-        return requests.post('http://127.0.0.2:5000', json={self.word: self.link})
+        return requests.post('http://localhost:8001', json={self.word: self.link})
 
 
 class MasterGetWord(Resource):
@@ -22,7 +22,7 @@ class MasterGetWord(Resource):
         self.word = word
 
     def get(self):
-        return requests.get(f"http://127.0.0.3:5000/{self.word}")
+        return requests.get(f"http://localhost:8002/{self.word}")
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -32,7 +32,7 @@ def send_data():
         word = wordDetails['word']
         link = wordDetails['link']
         Master(word, link).post()
-        return redirect('http://127.0.0.1:5000')
+        return redirect('http://localhost:8000')
 
     return render_template('index.html')
 
@@ -43,7 +43,7 @@ def get_data():
         wordDetails = request.form
         word = wordDetails['word']
         MasterGetWord(word).get()
-        return redirect(f"http://127.0.0.3:5000/{word}")
+        return redirect(f"http://localhost:8002/{word}")
 
     return render_template('search.html')
 
@@ -51,4 +51,4 @@ def get_data():
 api.add_resource(Master, '/')
 api.add_resource(MasterGetWord, '/search')
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(host='localhost', port=8000, debug=True)

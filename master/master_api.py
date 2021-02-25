@@ -13,7 +13,7 @@ class Master(Resource):
         self.link = link
 
     def post(self):
-        return requests.post('http://localhost:8001', json={self.word: self.link})
+        return requests.post('http://reaper:8001', json={self.word: self.link})
 
 
 class MasterGetWord(Resource):
@@ -22,7 +22,7 @@ class MasterGetWord(Resource):
         self.word = word
 
     def get(self):
-        return requests.get(f"http://localhost:8002/{self.word}")
+        return requests.get(f"http://keeper:8002/{self.word}")
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -51,4 +51,4 @@ def get_data():
 api.add_resource(Master, '/')
 api.add_resource(MasterGetWord, '/search')
 if __name__ == '__main__':
-    app.run(host='localhost', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)

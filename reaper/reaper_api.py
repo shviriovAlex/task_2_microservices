@@ -3,6 +3,7 @@ from flask_restful import Api, Resource, request
 import re
 from bs4 import BeautifulSoup
 import requests
+import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -35,10 +36,10 @@ class ReaperStart(Resource):
     def post(self):
         send_data = request.json
         parser_data = ParserReaper(send_data).page_with_vacancy()
-        requests.post('http://localhost:8002', json=parser_data)
-        return jsonify(send_data)
+        requests.post('http://keeper:8002', json=parser_data)
+        return send_data
 
 
 api.add_resource(ReaperStart, '/')
 if __name__ == '__main__':
-    app.run(host='localhost', port=8001, debug=True)
+    app.run(host='0.0.0.0', port=8001, debug=True)

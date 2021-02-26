@@ -6,6 +6,12 @@ import json
 app = Flask(__name__)
 api = Api(app)
 
+"""
+Add configuration for database. Create database task_docker after
+docker-compose is start. Data with creation database and table
+located in folder db, file init.sql
+"""
+
 config = {
     'user': 'root',
     'password': 'root',
@@ -18,6 +24,8 @@ config = {
 class Keeper(Resource):
 
     def get(self):
+        """Return all data from database.
+        to get data go localhost:8002"""
         connection = mysql.connector.connect(**config)
         cursor = connection.cursor()
         cursor.execute('SELECT * FROM words')
@@ -30,6 +38,9 @@ class Keeper(Resource):
 
 
     def post(self):
+        """
+        Add in database data from Reaper.
+        """
         send_data = request.get_json()
         connection = mysql.connector.connect(**config)
         cursor = connection.cursor()
@@ -45,6 +56,10 @@ class Keeper(Resource):
 class KeeperItems(Resource):
 
     def get(self, search_word):
+        """
+        Return word data (ID, word, count_words) that
+        was entered in html form on localhost:8000/search
+        """
         connection = mysql.connector.connect(**config)
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM words WHERE word = %s", [search_word])

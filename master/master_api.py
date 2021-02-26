@@ -13,6 +13,10 @@ class Master(Resource):
         self.link = link
 
     def post(self):
+        """
+        Send data from html form in Reaper
+        to start parsing. Get data from function send_data
+        """
         return requests.post('http://reaper:8001', json={self.word: self.link})
 
 
@@ -22,11 +26,20 @@ class MasterGetWord(Resource):
         self.word = word
 
     def get(self):
+        """
+        Get data from db by chosen/introduced word in html form
+        on localhost:8000/search. Get data from function get_data
+        """
         return requests.get(f"http://keeper:8002/{self.word}")
 
 
 @app.route('/', methods=['GET', 'POST'])
 def send_data():
+    """
+    Get data from html form with word and link
+    and call method post from class Master to send data to reaper.
+    Redirect on main page anyway, check does data is sending on localhost:8002
+    """
     if request.method == 'POST':
         wordDetails = request.form
         word = wordDetails['word']
@@ -39,6 +52,10 @@ def send_data():
 
 @app.route('/search', methods=['GET', 'POST'])
 def get_data():
+    """
+    Get data from html form with word and call method
+    post from class MasterGetWord to send request to database
+    """
     if request.method == 'POST':
         wordDetails = request.form
         word = wordDetails['word']

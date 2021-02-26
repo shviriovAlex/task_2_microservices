@@ -3,7 +3,6 @@ from flask_restful import Api, Resource, request
 import re
 from bs4 import BeautifulSoup
 import requests
-import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -17,6 +16,10 @@ class ParserReaper:
         self.words_links = words_links
 
     def page_with_vacancy(self):
+        """
+        Parser that search data on by class. Get dict with {word: link}.
+        Return dict {word: count_words}
+        """
         for cv_page in self.words_links:
             cv_page_soup = BeautifulSoup(requests.get(self.words_links[cv_page], headers=self.headers).content,
                                          'html.parser').find_all(
@@ -34,6 +37,9 @@ class ParserReaper:
 class ReaperStart(Resource):
 
     def post(self):
+        """
+        Send data in Keeper. Call Parser.
+        """
         send_data = request.json
         parser_data = ParserReaper(send_data).page_with_vacancy()
         requests.post('http://keeper:8002', json=parser_data)
